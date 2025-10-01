@@ -8,7 +8,6 @@ async function loadCourseData() {
         let raw = await fs.readFile('courses.json')
         let data = await JSON.parse(raw)
         return data
-    
 
 }
 
