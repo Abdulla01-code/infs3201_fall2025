@@ -1,6 +1,7 @@
 {
-  "dependencies": {
-    "promises": "^0.2.5",
-    "prompt-sync": "^4.2.0"
-  }
+    "name": "digital-media-catalog",
+    "type": "commonjs",
+    "dependencies": {
+        "prompt-sync": "^4.2.0"
+    }
 }

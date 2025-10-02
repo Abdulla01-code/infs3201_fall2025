@@ -1,6 +1,7 @@
 [
   {
     "id": 10342,
+    "owner": 1,
     "filename": "beach.jpg",
     "title": "Sunny Beach",
     "date": "2025-08-01T23:45:00",
@@ -15,11 +16,13 @@
       "summer",
       "ocean",
       "swimming",
-      "yellow Sand"
+      "yellow Sand",
+      "Water"
     ]
   },
   {
     "id": 54781,
+    "owner": 2,
     "filename": "mountain.png",
     "title": "Snowy Peak",
     "date": "2024-12-15T08:30:00",
@@ -36,6 +39,7 @@
   },
   {
     "id": 83927,
+    "owner": 1,
     "filename": "forest.jpg",
     "title": "Misty Forest",
     "date": "2023-11-21T06:10:00",
@@ -53,6 +57,7 @@
   },
   {
     "id": 29475,
+    "owner": 2,
     "filename": "city.jpg",
     "title": "City Skyline",
     "date": "2025-01-05T19:45:00",
@@ -69,6 +74,7 @@
   },
   {
     "id": 76291,
+    "owner": 1,
     "filename": "desert.jpg",
     "title": "Golden Dunes",
     "date": "2022-07-13T14:00:00",
@@ -85,6 +91,7 @@
   },
   {
     "id": 15483,
+    "owner": 2,
     "filename": "lake.png",
     "title": "Calm Waters",
     "date": "2023-05-19T09:20:00",
@@ -102,6 +109,7 @@
   },
   {
     "id": 94712,
+    "owner": 1,
     "filename": "bridge.jpg",
     "title": "Old Bridge",
     "date": "2024-03-12T16:50:00",
@@ -118,6 +126,7 @@
   },
   {
     "id": 67124,
+    "owner": 2,
     "filename": "garden.jpg",
     "title": "Blooming Garden",
     "date": "2025-04-08T11:30:00",
@@ -134,6 +143,7 @@
   },
   {
     "id": 43562,
+    "owner": 1,
     "filename": "cat.jpg",
     "title": "Playful Cat",
     "date": "2023-09-17T17:15:00",
@@ -150,6 +160,7 @@
   },
   {
     "id": 82391,
+    "owner": 2,
     "filename": "dog.png",
     "title": "Happy Dog",
     "date": "2022-10-29T12:05:00",
@@ -166,6 +177,7 @@
   },
   {
     "id": 25498,
+    "owner": 1,
     "filename": "waterfall.jpg",
     "title": "Majestic Falls",
     "date": "2025-02-18T15:25:00",
@@ -183,6 +195,7 @@
   },
   {
     "id": 99813,
+    "owner": 2,
     "filename": "island.jpg",
     "title": "Remote Island",
     "date": "2023-06-09T10:45:00",
@@ -199,6 +212,7 @@
   },
   {
     "id": 34567,
+    "owner": 1,
     "filename": "road.jpg",
     "title": "Endless Road",
     "date": "2024-09-27T13:40:00",
@@ -215,6 +229,7 @@
   },
   {
     "id": 57283,
+    "owner": 2,
     "filename": "castle.png",
     "title": "Ancient Castle",
     "date": "2025-03-22T18:55:00",
@@ -231,6 +246,7 @@
   },
   {
     "id": 61342,
+    "owner": 1,
     "filename": "market.jpg",
     "title": "Local Market",
     "date": "2022-11-30T07:25:00",
@@ -247,6 +263,7 @@
   },
   {
     "id": 46718,
+    "owner": 2,
     "filename": "cliff.jpg",
     "title": "High Cliffs",
     "date": "2023-08-11T20:15:00",
@@ -264,6 +281,7 @@
   },
   {
     "id": 73109,
+    "owner": 1,
     "filename": "cave.jpg",
     "title": "Dark Cave",
     "date": "2024-05-06T21:10:00",
@@ -280,6 +298,7 @@
   },
   {
     "id": 82941,
+    "owner": 2,
     "filename": "river.jpg",
     "title": "Flowing River",
     "date": "2025-07-14T09:55:00",
@@ -297,6 +316,7 @@
   },
   {
     "id": 90215,
+    "owner": 1,
     "filename": "temple.jpg",
     "title": "Sacred Temple",
     "date": "2023-02-02T05:35:00",
@@ -314,6 +334,7 @@
   },
   {
     "id": 78452,
+    "owner": 2,
     "filename": "sunset.jpg",
     "title": "Evening Sunset",
     "date": "2024-06-16T18:20:00",
