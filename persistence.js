@@ -132,7 +132,7 @@ async function connect() {
     if(!db){
         let client = new mongodb.MongoClient("mongodb+srv://60105012:essam123@cluster0.rvdq9ou.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
         await client.connect()
-        db = client.db("Assignment_3")
+        db = client.db("infs3201_fall2025")
         users = db.collection("users")
         photos = db.collection("photos")
         albums = db.collection("albums")
@@ -156,6 +156,8 @@ async function getAllAlbums() {
     let allAlbums = await albums.find().toArray()
     console.log(allAlbums)
 }
+
+getAllUsers()
 
 
 module.exports = {

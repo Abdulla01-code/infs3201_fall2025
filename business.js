@@ -6,7 +6,7 @@ const persistence = require('./persistence')
  * @returns {Promise<Array>} Array of photos accessible to user
  */
 async function allPhotos(userId) {
-    let photos = await persistence.readPhotoData()
+    let photos = await persistence.getAllPhotos()
     let result = []
     for (let photo of photos) {
         if (photo.owner === userId) {
