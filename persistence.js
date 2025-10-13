@@ -121,10 +121,47 @@ async function updatePhoto(updatedPhoto) {
     return changed
 }
 
+
+const mongodb = require("mongodb")
+let db = undefined
+let photos = undefined
+let albums = undefined
+let users = undefined
+
+async function connect() {
+    if(!db){
+        let client = new mongodb.MongoClient("mongodb+srv://60105012:essam123@cluster0.rvdq9ou.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+        await client.connect()
+        db = client.db("Assignment_3")
+        users = db.collection("users")
+        photos = db.collection("photos")
+        albums = db.collection("albums")
+    }
+}
+
+async function getAllUsers() {
+    await connect()
+    let allUsers = await users.find().toArray()
+    console.log(allUsers)
+}
+
+async function getAllPhotos() {
+    await connect()
+    let allPhotos = await photos.find().toArray()
+    console.log(allPhotos)
+}
+
+async function getAllAlbums() {
+    await connect()
+    let allAlbums = await albums.find().toArray()
+    console.log(allAlbums)
+}
+
+
 module.exports = {
-    readUserData,
-    readPhotoData,
-    readAlbumData,
+    getAllUsers,
+    getAllPhotos,
+    getAllAlbums,
     writePhotoData,
     findUser,
     findPhoto,
