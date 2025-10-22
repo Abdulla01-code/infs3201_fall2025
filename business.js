@@ -1,33 +1,21 @@
 const persistence = require('./persistence')
 
 /**
- * Get all photos (with access control)
- * @param {number} userId Current user ID
+ * Get all photos 
  * @returns {Promise<Array>} Array of photos accessible to user
  */
-async function allPhotos(userId) {
-    let photos = await persistence.getAllPhotos()
-    let result = []
-    for (let photo of photos) {
-        if (photo.owner === userId) {
-            result.push(photo)
-        }
-    }
-    return result
+async function allPhotos() {
+    return await persistence.getAllPhotos()
+
 }
 
 /**
  * Find photo by ID with access control
  * @param {number} photoId Photo ID to find
- * @param {number} userId Current user ID  
  * @returns {Promise<Object|undefined>} Photo object or undefined if not found/not accessible
  */
-async function findPhoto(photoId, userId) {
-    let photo = await persistence.findPhoto(photoId)
-    if (photo && photo.owner === userId) {
-        return photo
-    }
-    return undefined
+async function findPhoto(photoId) {
+    return await persistence.findPhoto(photoId)
 }
 
 /**
@@ -47,38 +35,30 @@ async function getAlbumNames(albumIds) {
 }
 
 /**
- * List photos in an album with access control
+ * List photos in an album
  * @param {string} albumName Name of the album
- * @param {number} userId Current user ID
- * @returns {Promise<Array>} Array of photos in the album accessible to user
+ * @returns {Promise<Array>} Array of photos in the album 
  */
-async function listAlbumPhotos(albumName, userId) {
+async function listAlbumPhotos(albumName) {
     let album = await persistence.findAlbumByName(albumName)
     if (!album) {
         return []
     }
     
     let photos = await persistence.findPhotosByAlbum(album.id)
-    let result = []
-    for (let photo of photos) {
-        if (photo.owner === userId) {
-            result.push(photo)
-        }
-    }
-    return result
+    return photos
 }
 
 /**
- * Update photo details with access control
+ * Update photo details
  * @param {number} photoId Photo ID to update
  * @param {string} title New title
  * @param {string} description New description  
- * @param {number} userId Current user ID
  * @returns {Promise<boolean>} True if successful, false if not found/not accessible
  */
-async function updatePhotoDetails(photoId, title, description, userId) {
+async function updatePhotoDetails(photoId, title, description) {
     let photo = await persistence.findPhoto(photoId)
-    if (!photo || photo.owner !== userId) {
+    if (!photo) {
         return false
     }
     
@@ -94,39 +74,14 @@ async function updatePhotoDetails(photoId, title, description, userId) {
 }
 
 /**
- * Add tag to photo with access control
- * @param {number} photoId Photo ID to tag
- * @param {string} tag Tag to add
- * @param {number} userId Current user ID
- * @returns {Promise<boolean>} True if successful, false if not found/not accessible/tag exists
+ * Get all albums
+ * @returns {Promise<Array>} Array of all albums
  */
-async function addTagToPhoto(photoId, tag, userId) {
-    let photo = await persistence.findPhoto(photoId)
-    if (!photo || photo.owner !== userId) {
-        return false
-    }
-    
-    if (photo.tags.includes(tag)) {
-        return false
-    }
-    
-    photo.tags.push(tag)
-    return await persistence.updatePhoto(photo)
+async function allAlbums() {
+    return await persistence.readAlbumData()
 }
 
-/**
- * Authenticate user
- * @param {string} username Username
- * @param {string} password Password  
- * @returns {Promise<Object|undefined>} User object if authenticated, undefined otherwise
- */
-async function authenticateUser(username, password) {
-    let user = await persistence.findUser(username)
-    if (user && user.password === password) {
-        return user
-    }
-    return undefined
-}
+
 
 module.exports = {
     allPhotos,
@@ -134,6 +89,5 @@ module.exports = {
     getAlbumNames,
     listAlbumPhotos,
     updatePhotoDetails,
-    addTagToPhoto,
-    authenticateUser
+    allAlbums
 }
