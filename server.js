@@ -83,6 +83,6 @@ app.post('/edit-photo/:photoId', async (req, res) => {
     }
 })
 
-app.listen(8000, () => {
+app.listen(6000, () => {
     console.log("Digital Media Catalog started on port 8000")
 })

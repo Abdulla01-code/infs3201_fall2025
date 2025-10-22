@@ -57,9 +57,8 @@ async function findPhoto(photoId) {
  */
 async function findPhotosByAlbum(albumId) {
     await connect()
-    return await albums.find({ albums: { $in: [albumId] } }).toArray()
+    return await photos.find({ albums: { $in: [albumId] } }).toArray()
 }
-
 
 /**
  * Find album by name
@@ -101,7 +100,6 @@ async function getAllAlbums() {
     return await albums.find({}).toArray()
 }
 
-getAllUsers()
 
 
 module.exports = {

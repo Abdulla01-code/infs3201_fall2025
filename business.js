@@ -6,7 +6,15 @@ const persistence = require('./persistence')
  */
 async function allPhotos() {
     return await persistence.getAllPhotos()
+}
 
+/**
+ * Find album by name
+ * @param {string} albumName Album name to find
+ * @returns {Promise<Object|undefined>} Album object or undefined if not found
+ */
+async function findAlbumByName(albumName) {
+    return await persistence.findAlbumByName(albumName) 
 }
 
 /**
@@ -81,10 +89,9 @@ async function allAlbums() {
     return await persistence.readAlbumData()
 }
 
-
-
 module.exports = {
     allPhotos,
+    findAlbumByName,  
     findPhoto,
     getAlbumNames,
     listAlbumPhotos,
