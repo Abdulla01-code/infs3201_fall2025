@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars')
 const app = express()
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(urlencodedParser)
+app.use(express.static('public'))
 
 // Set up Handlebars with helper for photo count
 const hbs = exphbs.create({ 
@@ -83,6 +84,6 @@ app.post('/edit-photo/:photoId', async (req, res) => {
     }
 })
 
-app.listen(6000, () => {
+app.listen(8000, () => {
     console.log("Digital Media Catalog started on port 8000")
 })
