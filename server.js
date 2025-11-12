@@ -24,9 +24,35 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 // Landing Page
-app.get('/', async (req, res) => {
-    let albums = await business.allAlbums()
-    res.render('home', { albums: albums, layout: undefined })
+app.get('/', (req, res) => {
+  res.render('login', { layout: undefined })
+})
+
+// Register Page
+app.get('/register', (req, res) => {
+  res.render('register', { layout: undefined })
+})
+
+// Login POST
+app.post('/login', async (req, res) => {
+  const { id, password } = req.body
+  const user = await business.findUser(id, password)
+  if (user) {
+    res.redirect('/home')
+  } else {
+    res.render('login', { errmsg: 'Invalid ID or password', layout: undefined })
+  }
+})
+
+// Register POST
+app.post('/register', async (req, res) => {
+  const { id, password } = req.body
+  const result = await business.createUser(id, password)
+  if (result) {
+    res.render('login', { msg: 'Account created successfully!', layout: undefined })
+  } else {
+    res.render('register', { errmsg: 'User already exists', layout: undefined })
+  }
 })
 
 
