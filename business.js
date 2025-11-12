@@ -1,4 +1,5 @@
 const persistence = require('./persistence')
+const crypto = require("crypto")
 
 /**
  * Get all photos 
@@ -89,6 +90,60 @@ async function allAlbums() {
     return await persistence.readAlbumData()
 }
 
+async function getUserById(id) {
+    return await persistence.getUserById(id)
+}
+
+async function validateCredentials(user) {
+    let data = await persistence.getUserById(user.id)
+    let password = user.password
+    console.log(user)
+    console.log(data)
+    if (data && data.id === Number(user.id) && data.password === password) {
+        return true
+    }
+    
+    return false
+}
+
+/**
+ * 
+ * @param {String} userId 
+ * @returns {Promise<object|null>}
+ */
+async function isUserIdAvailable(id) {
+    return await getUserById(id)
+}
+
+/**
+ * 
+ * @param {string} email 
+ * @returns {Promise<Object|null>} Student data if available,else null
+ */
+async function isEmailAvailable(email) {
+    return await persistence.getUserByEmail(email)
+}
+
+function arePasswordsMatching(password, repeatPassword) {
+    return password === repeatPassword
+}
+
+async function createUser(user) {
+    await persistence.createUser(user.id, user.name , user.email , user.password )
+}
+
+async function startSession(data) {
+    let uuid = crypto.randomUUID()
+    let expiry = new Date(Date.now() + 1000*60*4)
+    await persistence.saveSession(uuid, expiry, data)
+    return {
+        uuid: uuid,
+        expiry: expiry
+    }
+}
+
+
+
 module.exports = {
     allPhotos,
     findAlbumByName,  
@@ -96,5 +151,14 @@ module.exports = {
     getAlbumNames,
     listAlbumPhotos,
     updatePhotoDetails,
-    allAlbums
+    allAlbums,
+
+    createUser,
+    getUserById,
+    isUserIdAvailable,
+    validateCredentials,
+    isEmailAvailable,
+    arePasswordsMatching,
+
+    startSession
 }

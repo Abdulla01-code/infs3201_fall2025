@@ -2,12 +2,12 @@ const express = require('express')
 const business = require('./business')
 const bodyParser = require('body-parser')
 const exphbs = require('express-handlebars')
-
+const cookieParser = require('cookie-parser')
 const app = express()
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(urlencodedParser)
 app.use(express.static('public'))
-
+app.use(cookieParser())
 // Set up Handlebars with helper for photo count
 const hbs = exphbs.create({ 
     defaultLayout: undefined,
@@ -28,31 +28,65 @@ app.get('/', (req, res) => {
   res.render('login', { layout: undefined })
 })
 
+// Login POST
+app.post('/login', async (req, res) => {
+  let result = await business.validateCredentials(req.body)
+
+  let id = req.body.id
+
+  if(!result){
+      res.render("login", {
+          errmsg : "Invalid User Id or Password missmatch"
+      })
+      return
+  }
+
+
+  let session = await business.startSession({
+      id: id,
+  })
+
+  res.cookie('session', session.uuid, {expires: session.expiry})
+  res.redirect("/kfoo")
+})
+
+app.get("/kfoo", async (req, res) => {
+  res.send("Kfooooooooooo")
+})
+
 // Register Page
 app.get('/register', (req, res) => {
   res.render('register', { layout: undefined })
 })
 
-// Login POST
-app.post('/login', async (req, res) => {
-  const { id, password } = req.body
-  const user = await business.findUser(id, password)
-  if (user) {
-    res.redirect('/home')
-  } else {
-    res.render('login', { errmsg: 'Invalid ID or password', layout: undefined })
-  }
-})
-
 // Register POST
 app.post('/register', async (req, res) => {
-  const { id, password } = req.body
-  const result = await business.createUser(id, password)
-  if (result) {
-    res.render('login', { msg: 'Account created successfully!', layout: undefined })
-  } else {
-    res.render('register', { errmsg: 'User already exists', layout: undefined })
+  let user = req.body
+  console.log(user)
+  let notAvailable = await business.isUserIdAvailable(user.id)
+  if(notAvailable){
+      res.render('register', {layout:undefined, errmsg : "This User Id is already taken. Please choose another one."})
+      return
   }
+
+  notAvailable = await business.isEmailAvailable(user.email)
+  if(notAvailable){
+      res.render('register', {layout:undefined, errmsg : "This email is already registered. Please use a different email or log in."})
+      return
+  }
+
+  notAvailable = business.arePasswordsMatching(user.password, user.confirm)
+  if(!notAvailable){
+      res.render('register', {layout:undefined, errmsg : "The passwords you entered do not match. Please try again."})
+      return
+  }
+  await business.createUser(user)
+  
+  res.render("login", {
+      layout : undefined,
+      msg : "Account has been created"
+  })
+
 })
 
 

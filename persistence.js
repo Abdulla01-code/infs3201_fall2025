@@ -24,30 +24,13 @@ async function connect() {
     }
 }
 
-/**
- * Read photo data from MongoDB
- * @returns {Promise<Array>} Array of album objects
- */
-async function readPhotoData() {
-    await connect()
-    return await photos.find({}).toArray()
-}
-
-/**
- * Read album data from MongoDB
- * @returns {Promise<Array>} Array of album objects
- */
-async function readAlbumData() {
-    await connect()
-    return await albums.find({}).toArray()
-}
 
 /**
  * Find photo by ID
  * @param {number} photoId Photo ID to find
  * @returns {Promise<Object|undefined>} Photo object or undefined if not found
  */
-async function findPhoto(photoId) {
+async function getPhotoById(photoId) {
     await connect()
     return await photos.findOne({id: Number(photoId)})
 }
@@ -58,7 +41,7 @@ async function findPhoto(photoId) {
  * @param {number} albumId Album ID to search
  * @returns {Promise<Array>} Array of photos in the album
  */
-async function findPhotosByAlbum(albumId) {
+async function getPhotosByAlbumId(albumId) {
     await connect()
     return await photos.find({ albums: { $in: [Number(albumId)] } }).toArray()
 }
@@ -68,7 +51,7 @@ async function findPhotosByAlbum(albumId) {
  * @param {string} albumName Album name to find
  * @returns {Promise<Object|undefined>} Album object or undefined if not found
  */
-async function findAlbumByName(albumName) {
+async function getAlbumByName(albumName) {
     await connect()
     return await albums.findOne({ name: albumName})
 }
@@ -93,10 +76,22 @@ async function updatePhoto(updatedPhoto) {
  * @param {number} id
  * @returns {Promise<Object|null>} user document or null if not found
  */
-async function findUser(id) {
+async function getUserById(id) {
     await connect()
     return await users.findOne({ id : Number(id) })
 }
+
+/**
+ * Retrieves a user by their email addres.
+ * @param {String} email  The User email address
+ * @returns {object}
+ */
+async function getUserByEmail(email) {
+    await connect()
+    let result = await users.findOne({ email: email })
+    return result
+}
+
 
 /**
  * Create a new user account
@@ -108,6 +103,7 @@ async function findUser(id) {
  */
 async function createUser(id, name, email, password) {
     await connect()
+    console.log(id)
     await users.insertOne({
         id: Number(id),
         name : name,
@@ -181,18 +177,17 @@ module.exports = {
     getAllAlbums,
     
     // user
-    findUser,
+    getUserById,
+    getUserByEmail,
     createUser,
 
     // photo
-    findPhoto,
-    findPhotosByAlbum,
+    getPhotoById,
+    getPhotosByAlbumId,
     updatePhoto,
-    readPhotoData,
 
     // album
-    findAlbumByName,
-    readAlbumData,
+    getAlbumByName,
 
     // session
     saveSession,
