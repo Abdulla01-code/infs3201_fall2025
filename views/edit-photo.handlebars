@@ -1,6 +1,31 @@
-<h1>Editing Photo</h1>
-<form method="post">
-    <p>Title: <input name="title" value="{{photo.title}}"></p>
-    <p>Description: <input name="description" value="{{photo.description}}"></p>
-    <input type="submit" value="Submit">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editing Photo</title>
+    <link rel="stylesheet" href="/css/edit-photo.css">
+</head>
+<body>
+    <h1 class="page-title">Editing Photo</h1>
+
+    <div class="form-wrap">
+    <form method="post" class="form">
+        <div class="field">
+        <label for="title">Title</label>
+        <input id="title" name="title" value="{{photo.title}}" placeholder="Enter a title">
+        </div>
+
+        <div class="field">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="3" placeholder="Write a short description">{{photo.description}}</textarea>
+        </div>
+
+        <div class="actions">
+        <a href="/photos" class="btn ghost">Cancel</a>
+        <button type="submit" class="btn primary">Save Changes</button>
+        </div>
+    </form>
+    </div>
+</body>
+</html>

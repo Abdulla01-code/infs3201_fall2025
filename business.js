@@ -14,8 +14,8 @@ async function allPhotos() {
  * @param {string} albumName Album name to find
  * @returns {Promise<Object|undefined>} Album object or undefined if not found
  */
-async function findAlbumByName(albumName) {
-    return await persistence.findAlbumByName(albumName) 
+async function getAlbumByName(albumName) {
+    return await persistence.getAlbumByName(albumName) 
 }
 
 /**
@@ -23,8 +23,8 @@ async function findAlbumByName(albumName) {
  * @param {number} photoId Photo ID to find
  * @returns {Promise<Object|undefined>} Photo object or undefined if not found/not accessible
  */
-async function findPhoto(photoId) {
-    return await persistence.findPhoto(photoId)
+async function getPhotoById(photoId) {
+    return await persistence.getPhotoById(photoId)
 }
 
 /**
@@ -33,7 +33,7 @@ async function findPhoto(photoId) {
  * @returns {Promise<string>} Comma-separated list of album names
  */
 async function getAlbumNames(albumIds) {
-    let albums = await persistence.readAlbumData()
+    let albums = await persistence.getAllAlbums()
     let names = []
     for (let album of albums) {
         if (albumIds.includes(album.id)) {
@@ -49,12 +49,12 @@ async function getAlbumNames(albumIds) {
  * @returns {Promise<Array>} Array of photos in the album 
  */
 async function listAlbumPhotos(albumName) {
-    let album = await persistence.findAlbumByName(albumName)
+    let album = await persistence.getAlbumByName(albumName)
     if (!album) {
         return []
     }
     
-    let photos = await persistence.findPhotosByAlbum(album.id)
+    let photos = await persistence.getPhotosByAlbumId(album.id)
     return photos
 }
 
@@ -66,7 +66,7 @@ async function listAlbumPhotos(albumName) {
  * @returns {Promise<boolean>} True if successful, false if not found/not accessible
  */
 async function updatePhotoDetails(photoId, title, description) {
-    let photo = await persistence.findPhoto(photoId)
+    let photo = await persistence.getPhotoById(photoId)
     if (!photo) {
         return false
     }
@@ -87,7 +87,7 @@ async function updatePhotoDetails(photoId, title, description) {
  * @returns {Promise<Array>} Array of all albums
  */
 async function allAlbums() {
-    return await persistence.readAlbumData()
+    return await persistence.getAllAlbums()
 }
 
 async function getUserById(id) {
@@ -97,8 +97,6 @@ async function getUserById(id) {
 async function validateCredentials(user) {
     let data = await persistence.getUserById(user.id)
     let password = user.password
-    console.log(user)
-    console.log(data)
     if (data && data.id === Number(user.id) && data.password === password) {
         return true
     }
@@ -142,12 +140,42 @@ async function startSession(data) {
     }
 }
 
+/**
+ * 
+ * @param {string} sessionKey - The session key to validate
+ * @returns {Promise<boolean>} - Returns true if the session is valid
+ */
+async function validSession(sessionKey) {
+    if (!sessionKey) {
+        return false
+    }
 
+    let sessionData = await persistence.getSessionData(sessionKey)
+    if (!sessionData) {
+        return false
+    }
+
+    return true
+}
+
+async function getSessionData(sessionKey) {
+    return await persistence.getSessionData(sessionKey)
+}
+
+async function getUserPhotosById(id) {
+    return await persistence.getUserPhotosById(id)
+}
+
+async function getPublicPhotos(id) {
+    return await persistence.getPublicPhotos(id)
+}
 
 module.exports = {
     allPhotos,
-    findAlbumByName,  
-    findPhoto,
+    getPublicPhotos,
+    getAlbumByName,  
+    getPhotoById,
+    getUserPhotosById,
     getAlbumNames,
     listAlbumPhotos,
     updatePhotoDetails,
@@ -160,5 +188,7 @@ module.exports = {
     isEmailAvailable,
     arePasswordsMatching,
 
-    startSession
+    startSession,
+    validSession,
+    getSessionData
 }

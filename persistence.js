@@ -103,7 +103,6 @@ async function getUserByEmail(email) {
  */
 async function createUser(id, name, email, password) {
     await connect()
-    console.log(id)
     await users.insertOne({
         id: Number(id),
         name : name,
@@ -168,6 +167,14 @@ async function deleteSession(key) {
     await session.deleteOne({ SessionKey: key })
 }
 
+async function getUserPhotosById(id) {
+    await connect()
+    return await photos.find({owner : Number(id)}).toArray()
+}
+
+async function getPublicPhotos(id) {
+    return await photos.find({ isPublic: true, owner: { $ne: Number(id)} }).toArray()
+}
 
 
 module.exports = {
@@ -180,11 +187,13 @@ module.exports = {
     getUserById,
     getUserByEmail,
     createUser,
+    getUserPhotosById,
 
     // photo
     getPhotoById,
     getPhotosByAlbumId,
     updatePhoto,
+    getPublicPhotos,
 
     // album
     getAlbumByName,

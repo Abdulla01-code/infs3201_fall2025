@@ -1,0 +1,120 @@
+/* نفس روح الستايل اللي فوق: فاتح، حدود رفيعة، زوايا دائرية */
+
+.page-title{
+  margin:0 0 16px;
+  font-size:1.4rem;
+  font-weight:700;
+  color:#333;
+}
+
+.form-wrap{
+  max-width:720px;
+  margin:0 auto;
+}
+
+.form{
+  background:#fff;
+  border:1px solid #eee;
+  border-radius:12px;
+  padding:16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.03);
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+label{
+  font-size:.92rem;
+  color:#444;
+}
+
+input, textarea, select{
+  width:100%;
+  border:1px solid #ddd;
+  background:#fafafa;
+  color:#222;
+  border-radius:10px;
+  padding:10px 12px;
+  font:inherit;
+  outline:none;
+  transition: border .15s ease, background .15s ease, box-shadow .15s ease;
+}
+
+input::placeholder,
+textarea::placeholder{ color:#9aa0a6; }
+
+input:focus,
+textarea:focus,
+select:focus{
+  background:#fff;
+  border-color:#bcd6ff;
+  box-shadow:0 0 0 3px rgba(91,140,255,.18);
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:14px;
+}
+
+/* نفس كلاسّات الأزرار اللي بتستخدمها في البطاقات */
+.btn{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  background:#fff;
+  text-decoration:none;
+  font-size:.88rem;
+  color:#222;
+  cursor:pointer;
+  transition: background .15s ease, border .15s ease, transform .05s ease, box-shadow .15s ease;
+}
+
+.btn:hover{ background:#f6f6f6; }
+.btn:active{ transform: translateY(1px); }
+
+.btn.primary{
+  background:#5b8cff;
+  color:#fff;
+  border-color:#4b7bf0;
+  box-shadow:0 4px 14px rgba(91,140,255,.22);
+}
+.btn.primary:hover{
+  background:#4f81ff;
+}
+
+.btn.ghost{
+  background:#fff;
+  border-color:#ddd;
+  color:#333;
+}
+.btn.danger{
+  border-color:#f3b3b3;
+  color:#b30000;
+}
+
+/* تنسيقات معلومات بسيطة لو احتجتها */
+.notice{
+  background:#f7fbff;
+  border:1px solid #e3f0ff;
+  color:#2a4a7b;
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:.9rem;
+  margin-bottom:12px;
+}
+
+/* محاذاة مع الكونسبت العام للـ panels/grid */
+.panel{ background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; }
+.photos-layout{ display:grid; grid-template-columns:1fr; gap:16px; }
+
+/* ميديا كويري خفيفة */
+@media (max-width: 900px){
+  .form{ padding:14px; }
+}

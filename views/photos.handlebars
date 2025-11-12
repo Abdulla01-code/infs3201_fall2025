@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photos</title>
+  <link rel="stylesheet" href="/css/photos.css">
+</head>
+<body>
+
+  {{#if user}}
+    <h2>Welcome, {{user.name}}</h2>
+  {{/if}}
+
+  <div class="photos-layout">
+
+    <!-- LEFT: User Photos -->
+    <section class="panel">
+      <h3>Your Photos</h3>
+
+      {{#if userPhotos.length}}
+        <div class="grid">
+          {{#each userPhotos as |photo|}}
+            <article class="card">
+              <img src="/photos/{{photo.filename}}" alt="{{photo.title}}">
+              <div class="meta">
+                <h4 title="{{photo.title}}">{{photo.title}}</h4>
+
+                <div class="tags">
+                  {{#if (eq photo.visibility "public")}}
+                    <span class="tag public">Public</span>
+                  {{else}}
+                    <span class="tag private">Private</span>
+                  {{/if}}
+                </div>
+
+                <!-- Visibility Toggle -->
+                <form action="/photos/{{photo.id}}/visibility" method="post" class="inline">
+                  <label>
+                    Visibility:
+                    <select name="visibility">
+                      <option value="private" {{#if (eq photo.visibility "private")}}selected{{/if}}>Private</option>
+                      <option value="public" {{#if (eq photo.visibility "public")}}selected{{/if}}>Public</option>
+                    </select>
+                  </label>
+                  <button type="submit" class="btn small">Save</button>
+                </form>
+
+                <div class="actions">
+                  <a href="/edit-photo/{{photo.id}}" class="btn">Edit</a>
+                </div>
+              </div>
+
+              <!-- Comments Section -->
+              <div class="comments">
+                <h5>Comments</h5>
+                {{#if photo.comments.length}}
+                  <ul>
+                    {{#each photo.comments as |c|}}
+                      <li><strong>{{c.userName}}:</strong> {{c.text}}</li>
+                    {{/each}}
+                  </ul>
+                {{else}}
+                  <p class="empty">No comments yet.</p>
+                {{/if}}
+
+                <form action="/photos/{{photo.id}}/comments" method="post">
+                  <input type="text" name="text" placeholder="Add a comment..." required>
+                  <button type="submit">Post</button>
+                </form>
+              </div>
+
+            </article>
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="empty">You don’t have any photos yet.</p>
+      {{/if}}
+    </section>
+
+    <!-- RIGHT: Public Photos -->
+    <section class="panel">
+      <h3>Public Photos</h3>
+
+      {{#if publicPhotos.length}}
+        <div class="grid">
+          {{#each publicPhotos as |pub|}}
+            <article class="card">
+              <img src="/photos/{{pub.filename}}" alt="{{pub.title}}">
+              <div class="meta">
+                <h4 title="{{pub.title}}">{{pub.title}}</h4>
+                <span class="tag public">Public</span>
+              </div>
+
+              <!-- Comments (allowed for logged-in users) -->
+              <div class="comments">
+                <h5>Comments</h5>
+                {{#if pub.comments.length}}
+                  <ul>
+                    {{#each pub.comments as |c|}}
+                      <li><strong>{{c.userName}}:</strong> {{c.text}}</li>
+                    {{/each}}
+                  </ul>
+                {{else}}
+                  <p class="empty">No comments yet.</p>
+                {{/if}}
+
+                {{#if ../user}}
+                  <form action="/photos/{{pub.id}}/comments" method="post">
+                    <input type="text" name="text" placeholder="Add a comment..." required>
+                    <button type="submit">Post</button>
+                  </form>
+                {{/if}}
+              </div>
+
+            </article>
+          {{/each}}
+        </div>
+      {{else}}
+        <p class="empty">No public photos yet.</p>
+      {{/if}}
+    </section>
+
+  </div>
+
+</body>
+</html>
