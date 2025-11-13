@@ -139,12 +139,19 @@ app.post('/edit-photo/:photoId', async (req, res) => {
   let description = req.body.description
   
   let result = await business.updatePhotoDetails(photoId, title, description)
-  console.log(result)
   if (result) {
       res.redirect("/home")
   } else {
       res.send('Photo could not be updated')
   }
+})
+
+app.post("/photos/:id/visibility", async (req, res) => {
+  let id = Number(req.params.id);
+  let visibility = req.body.visibility;
+
+  await business.changeVisibility(id, visibility)
+  res.redirect("/home")
 })
 
 app.listen(8000, () => {

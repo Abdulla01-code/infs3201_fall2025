@@ -170,11 +170,17 @@ async function getPublicPhotos(id) {
     return await persistence.getPublicPhotos(id)
 }
 
+async function changeVisibility(id, visibility) {
+    await persistence.changeVisibility(id, visibility)
+}
+
 module.exports = {
     allPhotos,
     getPublicPhotos,
     getAlbumByName,  
     getPhotoById,
+    changeVisibility,
+    
     getUserPhotosById,
     getAlbumNames,
     listAlbumPhotos,

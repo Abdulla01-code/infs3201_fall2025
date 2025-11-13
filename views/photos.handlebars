@@ -14,7 +14,7 @@
 
   <div class="photos-layout">
 
-    <!-- LEFT: User Photos -->
+
     <section class="panel">
       <h3>Your Photos</h3>
 
@@ -27,7 +27,7 @@
                 <h4 title="{{photo.title}}">{{photo.title}}</h4>
 
                 <div class="tags">
-                  {{#if (eq photo.visibility "public")}}
+                  {{#if photo.isPublic}}
                     <span class="tag public">Public</span>
                   {{else}}
                     <span class="tag private">Private</span>
@@ -39,8 +39,8 @@
                   <label>
                     Visibility:
                     <select name="visibility">
-                      <option value="private" {{#if (eq photo.visibility "private")}}selected{{/if}}>Private</option>
-                      <option value="public" {{#if (eq photo.visibility "public")}}selected{{/if}}>Public</option>
+                      <option value="private" {{#unless photo.isPublic}}selected{{/unless}}>Private</option>
+                      <option value="public"  {{#if photo.isPublic}}selected{{/if}}>Public</option>
                     </select>
                   </label>
                   <button type="submit" class="btn small">Save</button>
@@ -78,7 +78,7 @@
       {{/if}}
     </section>
 
-    <!-- RIGHT: Public Photos -->
+
     <section class="panel">
       <h3>Public Photos</h3>
 

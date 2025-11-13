@@ -176,6 +176,10 @@ async function getPublicPhotos(id) {
     return await photos.find({ isPublic: true, owner: { $ne: Number(id)} }).toArray()
 }
 
+async function changeVisibility(photoId, visibility) {
+    await photos.updateOne({id : Number(photoId)}, { $set: { isPublic: visibility }} )
+}
+
 
 module.exports = {
     // Everything
@@ -194,6 +198,7 @@ module.exports = {
     getPhotosByAlbumId,
     updatePhoto,
     getPublicPhotos,
+    changeVisibility,
 
     // album
     getAlbumByName,
