@@ -125,7 +125,7 @@ app.get('/edit-photo/:photoId', async (req, res) => {
 })
 
 
-// Edit Photo Page (POST) - PRG Pattern
+// Edit Photo Page (POST)
 app.post('/edit-photo/:photoId', async (req, res) => {
   if(!await business.validSession(req.cookies.session)){
     res.render("login", {
