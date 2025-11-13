@@ -174,13 +174,18 @@ async function changeVisibility(id, visibility) {
     await persistence.changeVisibility(id, visibility)
 }
 
+async function addCommentToPhoto(photoId, comment) {
+    await persistence.addCommentToPhoto(photoId, comment)
+}
+
 module.exports = {
     allPhotos,
     getPublicPhotos,
     getAlbumByName,  
     getPhotoById,
     changeVisibility,
-    
+    addCommentToPhoto,
+
     getUserPhotosById,
     getAlbumNames,
     listAlbumPhotos,

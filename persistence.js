@@ -187,6 +187,10 @@ async function changeVisibility(photoId, visibility) {
     await photos.updateOne({id : Number(photoId)}, { $set: { isPublic: action }} )
 }
 
+async function addCommentToPhoto(photoId, comment) {
+    await photos.updateOne({ id: Number(photoId) }, { $push: { comments: comment } })
+}
+
 
 module.exports = {
     // Everything
@@ -206,6 +210,7 @@ module.exports = {
     updatePhoto,
     getPublicPhotos,
     changeVisibility,
+    addCommentToPhoto,
 
     // album
     getAlbumByName,

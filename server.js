@@ -64,7 +64,7 @@ app.get("/home", async (req ,res) => {
 
   let userPhotos = await business.getUserPhotosById(user.id)
   let publicPhotos = await business.getPublicPhotos(user.id)
-  console.log(publicPhotos)
+
   res.render('photos', {
   user: { id : user.id, name : user.name },
   userPhotos : userPhotos,
@@ -148,10 +148,40 @@ app.post('/edit-photo/:photoId', async (req, res) => {
 })
 
 app.post("/photos/:id/visibility", async (req, res) => {
-  let id = Number(req.params.id);
-  let visibility = req.body.visibility;
+  if(!await business.validSession(req.cookies.session)){
+    res.render("login", {
+        errmsg : "You are not logged in"
+    })
+    return
+  }
+
+  let id = Number(req.params.id)
+  let visibility = req.body.visibility
 
   await business.changeVisibility(id, visibility)
+  res.redirect("/home")
+})
+
+app.post("/photos/:id/comments", async (req, res) => {
+  if(!await business.validSession(req.cookies.session)){
+    res.render("login", {
+        errmsg : "You are not logged in"
+    })
+    return
+  }
+
+  let photoId = req.params.id
+  let text = req.body.text
+
+  let sessionData = await business.getSessionData(req.cookies.session)
+  let user = await business.getUserById(sessionData.Data.id)
+  let comment = {
+      userId: user.id,
+      userName: user.name,
+      text: text.trim(),
+      createdAt: new Date()
+  }
+  await business.addCommentToPhoto(photoId, comment)
   res.redirect("/home")
 })
 
