@@ -64,6 +64,7 @@ app.get("/home", async (req ,res) => {
 
   let userPhotos = await business.getUserPhotosById(user.id)
   let publicPhotos = await business.getPublicPhotos(user.id)
+  console.log(publicPhotos)
   res.render('photos', {
   user: { id : user.id, name : user.name },
   userPhotos : userPhotos,

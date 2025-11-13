@@ -177,7 +177,14 @@ async function getPublicPhotos(id) {
 }
 
 async function changeVisibility(photoId, visibility) {
-    await photos.updateOne({id : Number(photoId)}, { $set: { isPublic: visibility }} )
+    let action;
+    if(visibility === "public"){
+        action = true
+    }
+    else{
+        action = false
+    }
+    await photos.updateOne({id : Number(photoId)}, { $set: { isPublic: action }} )
 }
 
 
