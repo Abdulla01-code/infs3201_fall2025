@@ -97,7 +97,7 @@ async function getUserById(id) {
 async function validateCredentials(user) {
     let data = await persistence.getUserById(user.id)
     let password = user.password
-    if (data && data.id === Number(user.id) && data.password === password) {
+    if (data && data.id === Number(user.id) && data.password === hashPass(password)) {
         return true
     }
     
@@ -127,7 +127,8 @@ function arePasswordsMatching(password, repeatPassword) {
 }
 
 async function createUser(user) {
-    await persistence.createUser(user.id, user.name , user.email , user.password )
+    hashedPass = hashPass(user.password)
+    await persistence.createUser(user.id, user.name , user.email , hashedPass )
 }
 
 async function startSession(data) {
@@ -181,6 +182,19 @@ async function addCommentToPhoto(photoId, comment) {
 async function logout(SessionKey) {
   await persistence.deleteSession(SessionKey);
 }
+
+/**
+ * 
+ * @param {string} password - hashing for the password for more security
+ * @returns 
+ */
+function hashPass(password){
+    let hash = crypto.createHash('sha256')
+    hash.update(password)
+    let result = hash.digest('hex')
+    return result
+}
+
 
 module.exports = {
     allPhotos,
