@@ -185,6 +185,17 @@ app.post("/photos/:id/comments", async (req, res) => {
   res.redirect("/home")
 })
 
+app.post("/logout", async (req, res) => {
+  let SessionKey = req.cookies.session
+
+  if (SessionKey) {
+    await business.logout(SessionKey)
+  }
+
+  res.clearCookie("session")
+  res.redirect("/")
+})
+
 app.listen(8000, () => {
     console.log("Digital Media Catalog started on port 8000")
 })

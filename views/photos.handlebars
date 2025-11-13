@@ -10,6 +10,10 @@
 
   {{#if user}}
     <h2>Welcome, {{user.name}}</h2>
+
+    <form action="/logout" method="post" class="logout-form">
+      <button type="submit" class="btn small">Logout</button>
+    </form>
   {{/if}}
 
   <div class="photos-layout">

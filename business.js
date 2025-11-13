@@ -178,6 +178,10 @@ async function addCommentToPhoto(photoId, comment) {
     await persistence.addCommentToPhoto(photoId, comment)
 }
 
+async function logout(SessionKey) {
+  await persistence.deleteSession(SessionKey);
+}
+
 module.exports = {
     allPhotos,
     getPublicPhotos,
@@ -201,5 +205,6 @@ module.exports = {
 
     startSession,
     validSession,
-    getSessionData
+    getSessionData,
+    logout
 }

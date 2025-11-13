@@ -191,7 +191,9 @@ async function addCommentToPhoto(photoId, comment) {
     await photos.updateOne({ id: Number(photoId) }, { $push: { comments: comment } })
 }
 
-
+async function deleteSession(SessionKey) {
+  await session.deleteOne({ SessionKey: SessionKey });
+}
 module.exports = {
     // Everything
     getAllUsers,

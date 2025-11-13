@@ -14,4 +14,32 @@ h4 { margin:0; font-size:.95rem; white-space:nowrap; overflow:hidden; text-overf
 .btn.danger { border-color:#f3b3b3; }
 .inline { display:inline; }
 .empty { color:#777; }
+
+.logout-form {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.logout-form .btn.small {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f5f5f5;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.logout-form .btn.small:hover {
+  background: #ff4d4f;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.logout-form .btn.small:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
 @media (max-width:900px){ .photos-layout{ grid-template-columns:1fr; } }
