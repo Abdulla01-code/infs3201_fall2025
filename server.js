@@ -250,6 +250,32 @@ app.get("/albums/:id", async (req, res) => {
   })
 })
 
+app.get("/photo/:id", async (req, res) => {
+
+  if (!await business.validSession(req.cookies.session)) {
+    return res.render("login", { errmsg: "You are not logged in" });
+  }
+
+  let sessionData = await business.getSessionData(req.cookies.session);
+  let user = await business.getUserById(sessionData.Data.id);
+
+  let photoId = Number(req.params.id);
+  let photo = await business.getPhotoById(photoId);
+
+  if (!photo) {
+    return res.send("Photo not found");
+  }
+
+  let isOwner = (photo.owner === user.id);
+
+  res.render("photo-details", {
+    layout: undefined,
+    user: user,
+    photo: photo,
+    isOwner: isOwner
+  });
+});
+
 
 app.post("/logout", async (req, res) => {
   let SessionKey = req.cookies.session

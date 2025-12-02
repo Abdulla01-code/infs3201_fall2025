@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{photo.title}}</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/photoDetails.css">
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <h1 class="welcome-title">Welcome, {{user.name}}</h1>
+
+        <form action="/logout" method="post" class="logout-form">
+            <button class="btn small">Logout</button>
+        </form>
+    </header>
+
+    <a href="/home" class="go-back">⬅ Back</a>
+
+    <div class="details-container">
+
+        <div class="image-box">
+            <img src="/photos/{{photo.filename}}" alt="{{photo.title}}">
+        </div>
+
+        <div class="info-box">
+            <h2>{{photo.title}}</h2>
+
+            {{#if photo.description}}
+            <p class="desc">{{photo.description}}</p>
+            {{/if}}
+
+            <p><strong>Owner Name:</strong> {{user.name}}</p>
+
+            <p>
+                <strong>Visibility:</strong>
+                {{#if photo.isPublic}}
+                <span class="tag public">Public</span>
+                {{else}}
+                <span class="tag private">Private</span>
+                {{/if}}
+            </p>
+
+            {{#if isOwner}}
+            <a href="/edit-photo/{{photo.id}}" class="btn small">Edit Photo</a>
+            {{/if}}
+
+            <hr>
+
+            <div class="comments-section">
+                <h3>Comments</h3>
+
+                {{#if photo.comments.length}}
+                <ul class="comment-list">
+                    {{#each photo.comments}}
+                    <li class="comment">
+                        <strong>{{this.userName}}</strong>
+                        <span>{{this.text}}</span>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{else}}
+                <p class="empty">No comments yet.</p>
+                {{/if}}
+
+                <form action="/photos/{{photo.id}}/comments" method="post" class="comment-form">
+                    <input type="text" name="text" placeholder="Write a comment..." required>
+                    <button class="btn small">Post</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

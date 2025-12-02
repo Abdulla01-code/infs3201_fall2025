@@ -20,18 +20,28 @@
     </form>
   </header>
   {{/if}}
+
   <a href="/dashboard" class="go-back"> ⬅ Go Back</a>
+
   <div class="photos-layout">
 
-
+    <!-- ========================= -->
+    <!--   YOUR PHOTOS SECTION     -->
+    <!-- ========================= -->
     <section class="panel">
       <h3>Your Photos</h3>
 
       {{#if userPhotos.length}}
       <div class="grid">
+
         {{#each userPhotos as |photo|}}
         <article class="card">
+
+          <!-- Overlay link covering whole card -->
+          <a href="/photo/{{photo.id}}" class="card-link-overlay"></a>
+
           <img src="/photos/{{photo.filename}}" alt="{{photo.title}}">
+
           <div class="meta">
             <h4 title="{{photo.title}}">{{photo.title}}</h4>
 
@@ -43,7 +53,7 @@
               {{/if}}
             </div>
 
-            <!-- Visibility Toggle -->
+            <!-- Visibility toggle -->
             <form action="/photos/{{photo.id}}/visibility" method="post" class="inline">
               <label>
                 Visibility:
@@ -60,7 +70,7 @@
             </div>
           </div>
 
-          <!-- Comments Section -->
+          <!-- Comments -->
           <div class="comments">
             <h5>Comments</h5>
             {{#if photo.comments.length}}
@@ -73,14 +83,15 @@
             <p class="empty">No comments yet.</p>
             {{/if}}
 
-            <form action="/photos/{{photo.id}}/comments" method="post">
-              <input type="text" name="text" placeholder="Add a comment..." required>
-              <button type="submit">Post</button>
+            <form action="/photos/{{photo.id}}/comments" method="post" class="comment-form">
+              <input type="text" name="text" placeholder="Add a comment..." required class="comment-input">
+              <button type="submit" class="btn small comment-btn">Post</button>
             </form>
           </div>
 
         </article>
         {{/each}}
+
       </div>
       {{else}}
       <p class="empty">You don’t have any photos yet.</p>
@@ -88,19 +99,28 @@
     </section>
 
 
+    <!-- ========================= -->
+    <!--   PUBLIC PHOTOS SECTION   -->
+    <!-- ========================= -->
     <section class="panel">
       <h3>Public Photos</h3>
 
       {{#if publicPhotos.length}}
       <div class="grid">
+
         {{#each publicPhotos as |pub|}}
         <article class="card">
+
+          <!-- Whole-card click -->
+          <a href="/photo/{{pub.id}}" class="card-link-overlay"></a>
+
           <img src="/photos/{{pub.filename}}" alt="{{pub.title}}">
+
           <div class="meta">
             <h4 title="{{pub.title}}">{{pub.title}}</h4>
           </div>
 
-          <!-- Comments (allowed for logged-in users) -->
+          <!-- Comments -->
           <div class="comments">
             <h5>Comments</h5>
             {{#if pub.comments.length}}
@@ -114,19 +134,21 @@
             {{/if}}
 
             {{#if ../user}}
-            <form action="/photos/{{pub.id}}/comments" method="post">
-              <input type="text" name="text" placeholder="Add a comment..." required>
-              <button type="submit">Post</button>
+            <form action="/photos/{{pub.id}}/comments" method="post" class="comment-form">
+              <input type="text" name="text" placeholder="Add a comment..." required class="comment-input">
+              <button type="submit" class="btn small comment-btn">Post</button>
             </form>
             {{/if}}
           </div>
 
         </article>
         {{/each}}
+
       </div>
       {{else}}
       <p class="empty">No public photos yet.</p>
       {{/if}}
+
     </section>
 
   </div>
