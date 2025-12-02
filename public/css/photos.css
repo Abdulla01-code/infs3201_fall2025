@@ -189,7 +189,6 @@ h4 {
 }
 
 .comment-btn {
-    /* already عندها .btn.small من common.css */
     white-space: nowrap;
 }
 
@@ -201,7 +200,7 @@ h4 {
 .card-link-overlay {
     position: absolute;
     inset: 0;
-    z-index: 1;        /* تحت الكومنت والميتا */
+    z-index: 1;
 }
 
 /* Raise meta + comments so they're clickable */

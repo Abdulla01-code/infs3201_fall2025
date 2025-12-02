@@ -1,4 +1,5 @@
 const persistence = require('./persistence')
+const mail = require("./mail")
 const crypto = require("crypto")
 
 /**
@@ -15,7 +16,7 @@ async function allPhotos() {
  * @returns {Promise<Object|undefined>} Album object or undefined if not found
  */
 async function getAlbumByName(albumName) {
-    return await persistence.getAlbumByName(albumName) 
+    return await persistence.getAlbumByName(albumName)
 }
 
 /**
@@ -53,7 +54,7 @@ async function listAlbumPhotos(albumId) {
     if (!album) {
         return []
     }
-    
+
     let photos = await persistence.getPhotosByAlbumId(album.id)
     return photos
 }
@@ -70,15 +71,15 @@ async function updatePhotoDetails(photoId, title, description) {
     if (!photo) {
         return false
     }
-    
+
     if (title.trim() !== '') {
         photo.title = title
     }
-    
+
     if (description.trim() !== '') {
         photo.description = description
     }
-    
+
     return await persistence.updatePhoto(photo)
 }
 
@@ -104,7 +105,7 @@ async function validateCredentials(user) {
     if (data && data.id === Number(user.id) && data.password === hashPass(password)) {
         return true
     }
-    
+
     return false
 }
 
@@ -132,12 +133,12 @@ function arePasswordsMatching(password, repeatPassword) {
 
 async function createUser(user) {
     hashedPass = hashPass(user.password)
-    await persistence.createUser(user.id, user.name , user.email , hashedPass )
+    await persistence.createUser(user.id, user.name, user.email, hashedPass)
 }
 
 async function startSession(data) {
     let uuid = crypto.randomUUID()
-    let expiry = new Date(Date.now() + 1000*60*4)
+    let expiry = new Date(Date.now() + 1000 * 60 * 4)
     await persistence.saveSession(uuid, expiry, data)
     return {
         uuid: uuid,
@@ -180,30 +181,55 @@ async function changeVisibility(id, visibility) {
 }
 
 async function addCommentToPhoto(photoId, comment) {
-    await persistence.addCommentToPhoto(photoId, comment)
+    await persistence.addCommentToPhoto(photoId, comment);
+
+
+    let photo = await persistence.getPhotoById(photoId);
+    if (!photo) return;
+
+
+    let owner = await persistence.getUserById(photo.owner)
+    if (!owner || !owner.email) return
+
+    let subject = `New comment on your photo: ${photo.title || "Untitled Photo"}`
+
+    let body = `
+Hello ${owner.name},
+
+A new comment was added to your photo.
+
+Photo title: ${photo.title || "Untitled"}
+Comment by: ${comment.userName}
+Comment: ${comment.text}
+
+— Photo Album System
+`
+
+    mail.sendMail(owner.email, subject, body)
 }
+
 
 async function addNewPhoto(ownerId, filename, albumId) {
 
-  let newPhoto = {
-    id: Date.now(),
-    owner: ownerId,
-    filename: filename,
-    title: "",
-    date: new Date().toISOString(),
-    description: "",
-    resolution: "",
-    albums: [albumId],
-    tags: [],
-    isPublic: false,
-    comments: []
-  }
+    let newPhoto = {
+        id: Date.now(),
+        owner: ownerId,
+        filename: filename,
+        title: "",
+        date: new Date().toISOString(),
+        description: "",
+        resolution: "",
+        albums: [albumId],
+        tags: [],
+        isPublic: false,
+        comments: []
+    }
 
-  return await persistence.savePhoto(newPhoto)
+    return await persistence.savePhoto(newPhoto)
 }
 
 async function logout(SessionKey) {
-  await persistence.deleteSession(SessionKey)
+    await persistence.deleteSession(SessionKey)
 }
 
 /**
@@ -211,7 +237,7 @@ async function logout(SessionKey) {
  * @param {string} password - hashing for the password for more security
  * @returns 
  */
-function hashPass(password){
+function hashPass(password) {
     let hash = crypto.createHash('sha256')
     hash.update(password)
     let result = hash.digest('hex')
@@ -222,7 +248,7 @@ function hashPass(password){
 module.exports = {
     allPhotos,
     getPublicPhotos,
-    getAlbumByName,  
+    getAlbumByName,
     getPhotoById,
     changeVisibility,
     addCommentToPhoto,

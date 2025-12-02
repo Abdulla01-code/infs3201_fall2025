@@ -3,7 +3,7 @@ const business = require('./business')
 const bodyParser = require('body-parser')
 const exphbs = require('express-handlebars')
 const cookieParser = require('cookie-parser')
-const multer = require("multer")
+const fileUpload = require('express-fileupload')
 const app = express()
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(urlencodedParser)
@@ -17,23 +17,14 @@ const hbs = exphbs.create({
   }
 })
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/photos");
-  },
-  filename: function (req, file, cb) {
-    let unique = Date.now() + "-" + file.originalname;
-    cb(null, unique);
-  }
-})
 
-const upload = multer({ storage: storage });
 app.engine('handlebars', hbs.engine)
 app.set('view engine', 'handlebars')
 
 
 // Serve static files
 app.use(express.static('public'))
+app.use(fileUpload())
 
 // Landing Page
 app.get('/', (req, res) => {
@@ -306,19 +297,28 @@ app.get("/upload", async (req, res) => {
   })
 })
 
-app.post("/upload", upload.single("photoFile"), async (req, res) => {
+app.post("/upload", async (req, res) => {
 
   if (!await business.validSession(req.cookies.session)) {
     return res.render("login", { errmsg: "You are not logged in" })
   }
 
+  if (!req.files || !req.files.photoFile) {
+    return res.send("No file was uploaded.")
+  }
+
   let sessionData = await business.getSessionData(req.cookies.session)
   let userId = sessionData.Data.id
 
-  let filename = req.file.filename
+  let theFile = req.files.photoFile
+  let originalName = theFile.name
+  let uniqueName = Date.now() + "_" + originalName
+
+  await theFile.mv(__dirname + "/public/photos/" + uniqueName)
+
   let albumId = Number(req.body.albumId)
 
-  await business.addNewPhoto(userId, filename, albumId)
+  await business.addNewPhoto(userId, uniqueName, albumId)
 
   res.redirect("/home")
 })
