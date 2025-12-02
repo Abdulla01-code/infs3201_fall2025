@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Photos</title>
+  <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/photos.css">
 </head>
+
 <body>
 
   {{#if user}}
-    <h2>Welcome, {{user.name}}</h2>
+  <header class="top-bar">
+    <h1 class="welcome-title">Welcome, {{user.name}}</h1>
 
     <form action="/logout" method="post" class="logout-form">
       <button type="submit" class="btn small">Logout</button>
     </form>
+  </header>
   {{/if}}
-
+  <a href="/dashboard" class="go-back"> ⬅ Go Back</a>
   <div class="photos-layout">
 
 
@@ -23,62 +28,62 @@
       <h3>Your Photos</h3>
 
       {{#if userPhotos.length}}
-        <div class="grid">
-          {{#each userPhotos as |photo|}}
-            <article class="card">
-              <img src="/photos/{{photo.filename}}" alt="{{photo.title}}">
-              <div class="meta">
-                <h4 title="{{photo.title}}">{{photo.title}}</h4>
+      <div class="grid">
+        {{#each userPhotos as |photo|}}
+        <article class="card">
+          <img src="/photos/{{photo.filename}}" alt="{{photo.title}}">
+          <div class="meta">
+            <h4 title="{{photo.title}}">{{photo.title}}</h4>
 
-                <div class="tags">
-                  {{#if photo.isPublic}}
-                    <span class="tag public">Public</span>
-                  {{else}}
-                    <span class="tag private">Private</span>
-                  {{/if}}
-                </div>
+            <div class="tags">
+              {{#if photo.isPublic}}
+              <span class="tag public">Public</span>
+              {{else}}
+              <span class="tag private">Private</span>
+              {{/if}}
+            </div>
 
-                <!-- Visibility Toggle -->
-                <form action="/photos/{{photo.id}}/visibility" method="post" class="inline">
-                  <label>
-                    Visibility:
-                    <select name="visibility">
-                      <option value="private" {{#unless photo.isPublic}}selected{{/unless}}>Private</option>
-                      <option value="public"  {{#if photo.isPublic}}selected{{/if}}>Public</option>
-                    </select>
-                  </label>
-                  <button type="submit" class="btn small">Save</button>
-                </form>
+            <!-- Visibility Toggle -->
+            <form action="/photos/{{photo.id}}/visibility" method="post" class="inline">
+              <label>
+                Visibility:
+                <select name="visibility">
+                  <option value="private" {{#unless photo.isPublic}}selected{{/unless}}>Private</option>
+                  <option value="public" {{#if photo.isPublic}}selected{{/if}}>Public</option>
+                </select>
+              </label>
+              <button type="submit" class="btn small">Save</button>
+            </form>
 
-                <div class="actions">
-                  <a href="/edit-photo/{{photo.id}}" class="btn">Edit</a>
-                </div>
-              </div>
+            <div class="actions">
+              <a href="/edit-photo/{{photo.id}}" class="nbtn">Edit</a>
+            </div>
+          </div>
 
-              <!-- Comments Section -->
-              <div class="comments">
-                <h5>Comments</h5>
-                {{#if photo.comments.length}}
-                  <ul>
-                    {{#each photo.comments as |c|}}
-                      <li><strong>{{c.userName}}:</strong> {{c.text}}</li>
-                    {{/each}}
-                  </ul>
-                {{else}}
-                  <p class="empty">No comments yet.</p>
-                {{/if}}
+          <!-- Comments Section -->
+          <div class="comments">
+            <h5>Comments</h5>
+            {{#if photo.comments.length}}
+            <ul>
+              {{#each photo.comments as |c|}}
+              <li><strong>{{c.userName}}:</strong> {{c.text}}</li>
+              {{/each}}
+            </ul>
+            {{else}}
+            <p class="empty">No comments yet.</p>
+            {{/if}}
 
-                <form action="/photos/{{photo.id}}/comments" method="post">
-                  <input type="text" name="text" placeholder="Add a comment..." required>
-                  <button type="submit">Post</button>
-                </form>
-              </div>
+            <form action="/photos/{{photo.id}}/comments" method="post">
+              <input type="text" name="text" placeholder="Add a comment..." required>
+              <button type="submit">Post</button>
+            </form>
+          </div>
 
-            </article>
-          {{/each}}
-        </div>
+        </article>
+        {{/each}}
+      </div>
       {{else}}
-        <p class="empty">You don’t have any photos yet.</p>
+      <p class="empty">You don’t have any photos yet.</p>
       {{/if}}
     </section>
 
@@ -87,44 +92,45 @@
       <h3>Public Photos</h3>
 
       {{#if publicPhotos.length}}
-        <div class="grid">
-          {{#each publicPhotos as |pub|}}
-            <article class="card">
-              <img src="/photos/{{pub.filename}}" alt="{{pub.title}}">
-              <div class="meta">
-                <h4 title="{{pub.title}}">{{pub.title}}</h4>
-              </div>
+      <div class="grid">
+        {{#each publicPhotos as |pub|}}
+        <article class="card">
+          <img src="/photos/{{pub.filename}}" alt="{{pub.title}}">
+          <div class="meta">
+            <h4 title="{{pub.title}}">{{pub.title}}</h4>
+          </div>
 
-              <!-- Comments (allowed for logged-in users) -->
-              <div class="comments">
-                <h5>Comments</h5>
-                {{#if pub.comments.length}}
-                  <ul>
-                    {{#each pub.comments as |c|}}
-                      <li><strong>{{c.userName}}:</strong> {{c.text}}</li>
-                    {{/each}}
-                  </ul>
-                {{else}}
-                  <p class="empty">No comments yet.</p>
-                {{/if}}
+          <!-- Comments (allowed for logged-in users) -->
+          <div class="comments">
+            <h5>Comments</h5>
+            {{#if pub.comments.length}}
+            <ul>
+              {{#each pub.comments as |c|}}
+              <li><strong>{{c.userName}}:</strong> {{c.text}}</li>
+              {{/each}}
+            </ul>
+            {{else}}
+            <p class="empty">No comments yet.</p>
+            {{/if}}
 
-                {{#if ../user}}
-                  <form action="/photos/{{pub.id}}/comments" method="post">
-                    <input type="text" name="text" placeholder="Add a comment..." required>
-                    <button type="submit">Post</button>
-                  </form>
-                {{/if}}
-              </div>
+            {{#if ../user}}
+            <form action="/photos/{{pub.id}}/comments" method="post">
+              <input type="text" name="text" placeholder="Add a comment..." required>
+              <button type="submit">Post</button>
+            </form>
+            {{/if}}
+          </div>
 
-            </article>
-          {{/each}}
-        </div>
+        </article>
+        {{/each}}
+      </div>
       {{else}}
-        <p class="empty">No public photos yet.</p>
+      <p class="empty">No public photos yet.</p>
       {{/if}}
     </section>
 
   </div>
 
 </body>
+
 </html>

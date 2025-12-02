@@ -1,0 +1,36 @@
+.album-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.album-card {
+    border: 2px solid #ccc;
+    padding: 15px;
+    width: 250px;
+    border-radius: 10px;
+    text-align: center;
+    background: white;
+    transition: 0.2s;
+}
+
+.album-card:hover {
+    transform: scale(1.03);
+    border-color: #2E5E2A;
+}
+
+.album-card h3 {
+    margin-top: 0;
+}
+
+.album-card .btn {
+    background: #6C8C3D;
+    color: white;
+    padding: 8px 15px;
+    display: inline-block;
+    margin-top: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+}

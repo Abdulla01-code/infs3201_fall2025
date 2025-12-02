@@ -45,11 +45,11 @@ async function getAlbumNames(albumIds) {
 
 /**
  * List photos in an album
- * @param {string} albumName Name of the album
+ * @param {string} albumId id of the album
  * @returns {Promise<Array>} Array of photos in the album 
  */
-async function listAlbumPhotos(albumName) {
-    let album = await persistence.getAlbumByName(albumName)
+async function listAlbumPhotos(albumId) {
+    let album = await persistence.getAlbumById(albumId)
     if (!album) {
         return []
     }
@@ -88,6 +88,10 @@ async function updatePhotoDetails(photoId, title, description) {
  */
 async function allAlbums() {
     return await persistence.getAllAlbums()
+}
+
+async function getAlbumById(albumId) {
+    return await persistence.getAlbumById(albumId)
 }
 
 async function getUserById(id) {
@@ -206,6 +210,7 @@ module.exports = {
 
     getUserPhotosById,
     getAlbumNames,
+    getAlbumById,
     listAlbumPhotos,
     updatePhotoDetails,
     allAlbums,

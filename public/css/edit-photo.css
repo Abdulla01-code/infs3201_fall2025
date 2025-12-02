@@ -1,5 +1,3 @@
-/* نفس روح الستايل اللي فوق: فاتح، حدود رفيعة، زوايا دائرية */
-
 .page-title{
   margin:0 0 16px;
   font-size:1.4rem;
@@ -62,7 +60,6 @@ select:focus{
   margin-top:14px;
 }
 
-/* نفس كلاسّات الأزرار اللي بتستخدمها في البطاقات */
 .btn{
   display:inline-block;
   padding:8px 12px;
@@ -99,7 +96,6 @@ select:focus{
   color:#b30000;
 }
 
-/* تنسيقات معلومات بسيطة لو احتجتها */
 .notice{
   background:#f7fbff;
   border:1px solid #e3f0ff;
@@ -110,11 +106,9 @@ select:focus{
   margin-bottom:12px;
 }
 
-/* محاذاة مع الكونسبت العام للـ panels/grid */
 .panel{ background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; }
 .photos-layout{ display:grid; grid-template-columns:1fr; gap:16px; }
 
-/* ميديا كويري خفيفة */
 @media (max-width: 900px){
   .form{ padding:14px; }
 }

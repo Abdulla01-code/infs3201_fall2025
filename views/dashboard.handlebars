@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+
+  {{#if user}}
+    <header class="top-bar">
+      <h1 class="welcome-title">Welcome, {{user.name}}</h1>
+
+      <form action="/logout" method="post" class="logout-form">
+        <button type="submit" class="btn small">Logout</button>
+      </form>
+    </header>
+  {{/if}}
+
+  <div class="dashboard-links">
+    <a href="/home" class="btn big">
+      Photos
+    </a>
+
+    <a href="/albums" class="btn big alt">
+      Albums
+    </a>
+  </div>
+
+</body>
+</html>

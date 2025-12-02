@@ -56,6 +56,16 @@ async function getAlbumByName(albumName) {
     return await albums.findOne({ name: albumName})
 }
 
+/**
+ * Find album by ID
+ * @param {string} albumId Album id to find
+ * @returns {Promise<Object|undefined>} Album object or undefined if not found
+ */
+async function getAlbumById(albumId) {
+    await connect()
+    return await albums.findOne({ id: Number(albumId)})
+}
+
 
 /**
  * Update photo in storage
@@ -216,6 +226,7 @@ module.exports = {
 
     // album
     getAlbumByName,
+    getAlbumById,
 
     // session
     saveSession,

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Album Photos</title>
+
+  <link rel="stylesheet" href="/css/albumPhotos.css">
+  <link rel="stylesheet" href="/css/common.css">
+</head>
+
+<body>
+
+  {{#if user}}
+    <header class="top-bar">
+      <h1 class="welcome-title">Welcome, {{user.name}}</h1>
+
+      <form action="/logout" method="post" class="logout-form">
+        <button type="submit" class="btn small">Logout</button>
+      </form>
+    </header>
+  {{/if}}
+
+  {{!-- Go Back to Albums --}}
+  <a href="/albums" class="go-back">⬅ Back to Albums</a>
+
+  <h1 style="text-align:center;">{{album.name}} Album</h1>
+
+  {{!-- Photos Grid --}}
+  <div class="photo-grid">
+
+    {{#if photos.length}}
+      {{#each photos}}
+        <div class="photo-card">
+          <img src="/photos/{{this.filename}}" alt="{{this.title}}">
+
+          <h4 title="{{this.title}}">{{this.title}}</h4>
+
+          {{#if this.description}}
+            <p class="desc">{{this.description}}</p>
+          {{/if}}
+        </div>
+      {{/each}}
+
+    {{else}}
+      <p class="empty">This album has no photos yet.</p>
+    {{/if}}
+
+  </div>
+
+</body>
+</html>
