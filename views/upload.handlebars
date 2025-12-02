@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Photo</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/upload.css">
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <h1 class="welcome-title">Upload New Photo</h1>
+
+        <form action="/logout" method="post" class="logout-form">
+            <button class="btn small">Logout</button>
+        </form>
+    </header>
+
+    <a href="/dashboard" class="go-back">⬅ Go Back</a>
+
+    <div class="upload-container">
+
+        <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+
+            <label>Select Photo File:</label>
+            <input type="file" name="photoFile" required>
+
+            <button type="reset" class="btn small" style="background:#b33; color:white;">
+                Clear File
+            </button>
+
+            <label>Select Album:</label>
+            <select name="albumId" required>
+                {{#each albums}}
+                <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+
+            <button class="btn">Upload</button>
+
+        </form>
+
+
+    </div>
+
+</body>
+
+</html>

@@ -183,8 +183,27 @@ async function addCommentToPhoto(photoId, comment) {
     await persistence.addCommentToPhoto(photoId, comment)
 }
 
+async function addNewPhoto(ownerId, filename, albumId) {
+
+  let newPhoto = {
+    id: Date.now(),
+    owner: ownerId,
+    filename: filename,
+    title: "",
+    date: new Date().toISOString(),
+    description: "",
+    resolution: "",
+    albums: [albumId],
+    tags: [],
+    isPublic: false,
+    comments: []
+  }
+
+  return await persistence.savePhoto(newPhoto)
+}
+
 async function logout(SessionKey) {
-  await persistence.deleteSession(SessionKey);
+  await persistence.deleteSession(SessionKey)
 }
 
 /**
@@ -207,6 +226,7 @@ module.exports = {
     getPhotoById,
     changeVisibility,
     addCommentToPhoto,
+    addNewPhoto,
 
     getUserPhotosById,
     getAlbumNames,

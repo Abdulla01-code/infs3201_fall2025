@@ -25,11 +25,14 @@
 
   <div class="photos-layout">
 
-    <!-- ========================= -->
-    <!--   YOUR PHOTOS SECTION     -->
-    <!-- ========================= -->
     <section class="panel">
-      <h3>Your Photos</h3>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3>Your Photos</h3>
+
+        <a href="/upload" class="btn small">
+          Upload New Photo
+        </a>
+      </div>
 
       {{#if userPhotos.length}}
       <div class="grid">

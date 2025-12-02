@@ -120,7 +120,7 @@ async function createUser(id, name, email, password) {
         password : password
     })
 
-  return true;
+  return true
 }
 
 async function getAllUsers() {
@@ -187,7 +187,7 @@ async function getPublicPhotos(id) {
 }
 
 async function changeVisibility(photoId, visibility) {
-    let action;
+    let action
     if(visibility === "public"){
         action = true
     }
@@ -201,8 +201,13 @@ async function addCommentToPhoto(photoId, comment) {
     await photos.updateOne({ id: Number(photoId) }, { $push: { comments: comment } })
 }
 
+async function savePhoto(photoObj) {
+  return await photos.insertOne(photoObj);
+}
+
+
 async function deleteSession(SessionKey) {
-  await session.deleteOne({ SessionKey: SessionKey });
+  await session.deleteOne({ SessionKey: SessionKey })
 }
 module.exports = {
     // Everything
@@ -223,6 +228,7 @@ module.exports = {
     getPublicPhotos,
     changeVisibility,
     addCommentToPhoto,
+    savePhoto,
 
     // album
     getAlbumByName,

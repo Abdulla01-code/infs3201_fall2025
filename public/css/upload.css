@@ -1,0 +1,30 @@
+.upload-container {
+  max-width: 500px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.upload-form label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.upload-form input,
+.upload-form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.upload-form button {
+  margin-top: 10px;
+}

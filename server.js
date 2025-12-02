@@ -3,6 +3,7 @@ const business = require('./business')
 const bodyParser = require('body-parser')
 const exphbs = require('express-handlebars')
 const cookieParser = require('cookie-parser')
+const multer = require("multer")
 const app = express()
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(urlencodedParser)
@@ -16,6 +17,17 @@ const hbs = exphbs.create({
   }
 })
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/photos");
+  },
+  filename: function (req, file, cb) {
+    let unique = Date.now() + "-" + file.originalname;
+    cb(null, unique);
+  }
+})
+
+const upload = multer({ storage: storage });
 app.engine('handlebars', hbs.engine)
 app.set('view engine', 'handlebars')
 
@@ -55,7 +67,7 @@ app.get("/dashboard", async (req, res) => {
   if (!await business.validSession(req.cookies.session)) {
     return res.render("login", {
       errmsg: "You are not logged in"
-    });
+    })
   }
 
   let sessionData = await business.getSessionData(req.cookies.session)
@@ -253,28 +265,64 @@ app.get("/albums/:id", async (req, res) => {
 app.get("/photo/:id", async (req, res) => {
 
   if (!await business.validSession(req.cookies.session)) {
-    return res.render("login", { errmsg: "You are not logged in" });
+    return res.render("login", { errmsg: "You are not logged in" })
   }
 
-  let sessionData = await business.getSessionData(req.cookies.session);
-  let user = await business.getUserById(sessionData.Data.id);
+  let sessionData = await business.getSessionData(req.cookies.session)
+  let user = await business.getUserById(sessionData.Data.id)
 
-  let photoId = Number(req.params.id);
-  let photo = await business.getPhotoById(photoId);
+  let photoId = Number(req.params.id)
+  let photo = await business.getPhotoById(photoId)
 
   if (!photo) {
-    return res.send("Photo not found");
+    return res.send("Photo not found")
   }
 
-  let isOwner = (photo.owner === user.id);
+  let isOwner = (photo.owner === user.id)
 
   res.render("photo-details", {
     layout: undefined,
     user: user,
     photo: photo,
     isOwner: isOwner
-  });
-});
+  })
+})
+
+app.get("/upload", async (req, res) => {
+
+  if (!await business.validSession(req.cookies.session)) {
+    return res.render("login", { errmsg: "You are not logged in" })
+  }
+
+  let sessionData = await business.getSessionData(req.cookies.session)
+  let user = await business.getUserById(sessionData.Data.id)
+
+  let albums = await business.allAlbums()
+
+  return res.render("upload", {
+    layout: undefined,
+    user: user,
+    albums: albums
+  })
+})
+
+app.post("/upload", upload.single("photoFile"), async (req, res) => {
+
+  if (!await business.validSession(req.cookies.session)) {
+    return res.render("login", { errmsg: "You are not logged in" })
+  }
+
+  let sessionData = await business.getSessionData(req.cookies.session)
+  let userId = sessionData.Data.id
+
+  let filename = req.file.filename
+  let albumId = Number(req.body.albumId)
+
+  await business.addNewPhoto(userId, filename, albumId)
+
+  res.redirect("/home")
+})
+
 
 
 app.post("/logout", async (req, res) => {
