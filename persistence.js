@@ -133,6 +133,11 @@ async function getAllPhotos() {
     return await photos.find({}).toArray()
 }
 
+async function getAllPublicPhotos() {
+    await connect()
+    return await photos.find({ isPublic: true }).toArray()
+}
+
 async function getAllAlbums() {
     await connect()
     return await albums.find({}).toArray()
@@ -213,6 +218,7 @@ module.exports = {
     // Everything
     getAllUsers,
     getAllPhotos,
+    getAllPublicPhotos,
     getAllAlbums,
     
     // user

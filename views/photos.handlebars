@@ -15,6 +15,11 @@
   <header class="top-bar">
     <h1 class="welcome-title">Welcome, {{user.name}}</h1>
 
+    <form action="/search" method="get" class="search-form">
+      <input type="text" name="q" placeholder="Search photos..." required>
+      <button type="submit" class="btn small">Search</button>
+    </form>
+
     <form action="/logout" method="post" class="logout-form">
       <button type="submit" class="btn small">Logout</button>
     </form>

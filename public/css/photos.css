@@ -211,3 +211,22 @@ h4 {
     position: relative;
     z-index: 2;
 }
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-form input {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.search-form input:focus {
+    border-color: #2E5E2A;
+    box-shadow: 0 0 0 2px rgba(46, 94, 42, 0.15);
+}

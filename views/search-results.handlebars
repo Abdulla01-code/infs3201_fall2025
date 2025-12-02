@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Results</title>
+
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/photos.css">
+</head>
+
+<body>
+
+  <!-- Top bar -->
+  <header class="top-bar">
+    <h1 class="welcome-title">Search Results</h1>
+
+    <form action="/logout" method="post" class="logout-form">
+      <button type="submit" class="btn small">Logout</button>
+    </form>
+  </header>
+
+  <!-- Back Button -->
+  <a href="/home" class="go-back">⬅ Go Back</a>
+
+  <section class="panel">
+
+    <h2>Results for: "{{query}}"</h2>
+    <p>{{count}} photo(s) found.</p>
+
+    {{#if photos.length}}
+      <div class="grid">
+        {{#each photos}}
+          <article class="card">
+            <a href="/photo/{{this.id}}">
+              <img src="/photos/{{this.filename}}" alt="{{this.title}}">
+            </a>
+
+            <div class="meta">
+              <h4>{{this.title}}</h4>
+            </div>
+          </article>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="empty">No matching photos found.</p>
+    {{/if}}
+
+  </section>
+
+</body>
+</html>

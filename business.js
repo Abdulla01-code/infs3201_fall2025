@@ -228,6 +228,49 @@ async function addNewPhoto(ownerId, filename, albumId) {
     return await persistence.savePhoto(newPhoto)
 }
 
+async function searchPhotos(query) {
+
+    let allPublic = await persistence.getPublicPhotos();
+
+    let q = query.toLowerCase().trim();
+
+    let results = [];
+
+    for (let i = 0; i < allPublic.length; i++) {
+        let photo = allPublic[i];
+
+        let found = false;
+
+        // --- 1) Title ---
+        if (photo.title && photo.title.toLowerCase().includes(q)) {
+            found = true;
+        }
+
+        // --- 2) Description ---
+        if (!found && photo.description && photo.description.toLowerCase().includes(q)) {
+            found = true;
+        }
+
+        // --- 3) Tags ---
+        if (!found && photo.tags && photo.tags.length > 0) {
+            for (let t = 0; t < photo.tags.length; t++) {
+                if (photo.tags[t].toLowerCase().includes(q)) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (found) {
+            results.push(photo);
+        }
+    }
+
+    return results;
+}
+
+
+
 async function logout(SessionKey) {
     await persistence.deleteSession(SessionKey)
 }
@@ -253,6 +296,7 @@ module.exports = {
     changeVisibility,
     addCommentToPhoto,
     addNewPhoto,
+    searchPhotos,
 
     getUserPhotosById,
     getAlbumNames,

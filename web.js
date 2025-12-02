@@ -323,7 +323,35 @@ app.post("/upload", async (req, res) => {
   res.redirect("/home")
 })
 
+app.get("/search", async (req, res) => {
 
+    if (!await business.validSession(req.cookies.session)) {
+        return res.render("login", { errmsg: "You are not logged in" })
+    }
+
+    let query = req.query.q || ""
+    query = query.trim()
+
+    if (query === "") {
+        return res.render("search-results", { 
+            user: (await business.getSessionData(req.cookies.session)).Data, 
+            photos: [],
+            message: "Please type something to search." 
+        });
+    }
+
+    let sessionData = await business.getSessionData(req.cookies.session)
+    let user = sessionData.Data
+
+    let results = await business.searchPhotos(query)
+
+    res.render("search-results", {
+        user: user,
+        photos: results,
+        query: query,
+        count: results.length
+    })
+})
 
 app.post("/logout", async (req, res) => {
   let SessionKey = req.cookies.session
